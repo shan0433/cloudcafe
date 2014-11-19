@@ -56,7 +56,14 @@ class BaseIdentity(object):
 
 
 class BaseIdentityModel(BaseIdentity, AutoMarshallingModel):
-    pass
+    @classmethod
+    def _remove_prefix(cls, prefix, data_dict, delimiter=':'):
+        for key in data_dict.keys():
+            if key.startswith(prefix):
+                new_key = key.split(delimiter)[1]
+                data_dict[new_key] = data_dict[key]
+                del data_dict[key]
+        return data_dict
 
 
 class BaseIdentityListModel(BaseIdentity, AutoMarshallingListModel):
